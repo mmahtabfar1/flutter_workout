@@ -88,6 +88,7 @@ class Workout {
       WorkoutFeature.steps,
       WorkoutFeature.distance,
       WorkoutFeature.speed,
+      WorkoutFeature.location,
     };
     final requestedActivityRecognitionFeatures =
         _currentFeatures.toSet().intersection(activityRecognitionFeatures);
@@ -155,7 +156,7 @@ class Workout {
     try {
       final arguments = call.arguments as List<dynamic>;
       final featureString = arguments[0] as String;
-      final value = arguments[1] as double;
+      final value = arguments[1] as String;
 
       // I can't get maps to work in C++ and there aren't any errors, so this is what we got
       late final int? timestamp;

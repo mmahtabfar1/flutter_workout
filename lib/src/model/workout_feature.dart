@@ -17,4 +17,7 @@ enum WorkoutFeature {
 
   /// Speed in m/s
   speed,
+
+  /// GPS location as String of "${Latitude}/${Longitude}"
+  location,
 }

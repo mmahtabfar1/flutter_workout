@@ -9,7 +9,7 @@ class WorkoutReading {
   final WorkoutFeature feature;
 
   /// The value of the sensor reading.
-  final double value;
+  final String value;
 
   /// Constructor
   WorkoutReading(this.feature, this.value, int? timestamp)

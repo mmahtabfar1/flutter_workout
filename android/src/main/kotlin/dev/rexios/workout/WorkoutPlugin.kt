@@ -11,6 +11,7 @@ import androidx.health.services.client.data.ExerciseConfig
 import androidx.health.services.client.data.ExerciseLapSummary
 import androidx.health.services.client.data.ExerciseType
 import androidx.health.services.client.data.ExerciseUpdate
+import androidx.health.services.client.data.LocationData
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import io.flutter.embedding.engine.plugins.FlutterPlugin
@@ -89,6 +90,7 @@ class WorkoutPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ExerciseU
         DataType.STEPS_TOTAL to "steps",
         DataType.DISTANCE_TOTAL to "distance",
         DataType.SPEED to "speed",
+        DataType.LOCATION to "location",
     )
 
     private fun dataTypeToString(type: DataType<*, *>): String {
@@ -149,10 +151,14 @@ class WorkoutPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ExerciseU
             Instant.ofEpochMilli(System.currentTimeMillis() - SystemClock.elapsedRealtime())
 
         update.latestMetrics.sampleDataPoints.forEach { dataPoint ->
+            val value = if (dataPoint.value is LocationData)
+                "${(dataPoint.value as LocationData).latitude}/${(dataPoint.value as LocationData).longitude}"
+            else
+                "${(dataPoint.value as Number).toDouble()}";
             data.add(
                 listOf(
                     dataTypeToString(dataPoint.dataType),
-                    (dataPoint.value as Number).toDouble(),
+                    value,
                     dataPoint.getTimeInstant(bootInstant).toEpochMilli()
                 )
             )
@@ -161,7 +167,7 @@ class WorkoutPlugin : FlutterPlugin, MethodCallHandler, ActivityAware, ExerciseU
         update.latestMetrics.cumulativeDataPoints.forEach { dataPoint ->
             data.add(
                 listOf(
-                    dataTypeToString(dataPoint.dataType), dataPoint.total.toDouble(),
+                    dataTypeToString(dataPoint.dataType), "${dataPoint.total.toDouble()}",
                     // I feel like this should have getEndInstant on it like above, but whatever
                     dataPoint.end.toEpochMilli()
                 )
