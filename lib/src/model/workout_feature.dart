@@ -20,4 +20,10 @@ enum WorkoutFeature {
 
   /// GPS location as String of "${Latitude}/${Longitude}"
   location,
+
+  /// Power in Watts
+  power,
+
+  /// Cadence in RPM
+  cadence,
 }
