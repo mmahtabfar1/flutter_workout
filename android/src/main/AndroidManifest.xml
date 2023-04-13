@@ -2,4 +2,13 @@
     <queries>
         <package android:name="com.google.android.wearable.healthservices" />
     </queries>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <application>
+        <service
+            android:name=".WorkoutService"
+            android:enabled="true"
+            android:exported="false"
+            android:foregroundServiceType="dataSync|location"
+            />
+    </application>
 </manifest>
